@@ -1,7 +1,8 @@
+import { Statistic } from "./Statistic";
 export const Statistics = ({ good, neutral, bad }) => {
 	const all = good + bad + neutral;
 	const average = all === 0 ? 0 : (good - bad) / all;
-	const positive = all === 0 ? 0 : (good / all) * 100;
+	const positive = all === 0 ? 0 : (good / all) * 100 + "%";
 	if (all === 0) {
 		return (
 			<>
@@ -13,12 +14,12 @@ export const Statistics = ({ good, neutral, bad }) => {
 	return (
 		<>
 			<h1>statics</h1>
-			<p>good {good}</p>
-			<p>neutral {neutral}</p>
-			<p>bad {bad}</p>
-			<p>all {all}</p>
-			<p>average {average}</p>
-			<p>positive {positive}%</p>
+			<Statistic text="good" value={good}></Statistic>
+			<Statistic text="neutral" value={neutral}></Statistic>
+			<Statistic text="bad" value={bad}></Statistic>
+			<Statistic text="all" value={all}></Statistic>
+			<Statistic text="average" value={average}></Statistic>
+			<Statistic text="positive" value={positive}></Statistic>
 		</>
 	);
 };
