@@ -1,24 +1,42 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import { Anecdote } from "./Anecdote";
 
 const App = (props) => {
 	const [selected, setSelected] = useState(0);
 	const [points, setPoints] = useState({ ...new Uint8Array(6) });
+	const [bestAnecdote, setBestAnecdote] = useState(0);
 	const nextAnecdote = () => {
 		setSelected(Math.floor(Math.random() * 6));
 	};
 	const voteAnecdote = () => {
 		const copy = { ...points };
 		copy[selected] += 1;
+		checkBestAnecdote(copy);
 		setPoints(copy);
+	};
+	const checkBestAnecdote = (points) => {
+		const arrayOfPoints = Object.values(points);
+		const maxVotes = Math.max(...arrayOfPoints);
+		setBestAnecdote(arrayOfPoints.indexOf(maxVotes));
+		return 0;
 	};
 
 	return (
 		<div>
-			<p>{props.anecdotes[selected]}</p>
-			<p>has {points[selected]} votes</p>
+			<Anecdote
+				title="Anecdote of the day"
+				anecdote={props.anecdotes[selected]}
+				votes={points[selected]}
+			></Anecdote>
+
 			<button onClick={voteAnecdote}>vote</button>
 			<button onClick={nextAnecdote}>next anecdote</button>
+			<Anecdote
+				title="Anecdote with most votes"
+				anecdote={props.anecdotes[bestAnecdote]}
+				votes={points[bestAnecdote]}
+			></Anecdote>
 		</div>
 	);
 };
