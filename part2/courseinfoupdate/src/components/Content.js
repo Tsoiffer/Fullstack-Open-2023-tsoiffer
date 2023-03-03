@@ -1,5 +1,4 @@
 import { Part } from "./Part";
-console.log("content");
 const Content = ({ parts }) => (
   <div>
     {parts.map((part) => (
