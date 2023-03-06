@@ -1,3 +1,4 @@
+import Weather from "./Weather";
 const Countries = ({ countrie }) => {
 	console.log(countrie[0]);
 	const countrieSelected = countrie[0];
@@ -12,7 +13,8 @@ const Countries = ({ countrie }) => {
 					<li key={lenguage.name}>{lenguage.name} </li>
 				))}
 			</ul>
-			<img src="https://flagcdn.com/w320/ar.png" alt="flag" />
+			<img src={countrieSelected.flag} alt="flag" />
+			<Weather countrieName={countrieSelected.name} />
 		</div>
 	);
 };

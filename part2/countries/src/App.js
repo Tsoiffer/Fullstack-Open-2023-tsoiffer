@@ -14,7 +14,7 @@ function App() {
 		promeise.then((response) => {
 			setCountries(response.data);
 		});
-	}, [nameCountrie]);
+	}, [urlAPI]);
 
 	const handleChange = (event) => {
 		setNameCountrie(event.target.value);
@@ -22,7 +22,7 @@ function App() {
 
 	return (
 		<div>
-			<form action="submit">
+			<form>
 				find countries
 				<input value={nameCountrie} onChange={handleChange} />
 			</form>
