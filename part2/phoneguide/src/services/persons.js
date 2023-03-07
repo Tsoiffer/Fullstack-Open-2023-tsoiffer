@@ -28,5 +28,13 @@ const deletePerson = (id) => {
     return response.data;
   });
 };
+const updatePerson = (id, changedPerson) => {
+  const request = axios.put(`${baseUrl}/${id}`, changedPerson);
+  return request.then((response) => {
+    console.log("promise fulfilled");
+    console.log(response);
+    return response.data;
+  });
+};
 
-export default { getAll, createPerson, deletePerson };
+export default { getAll, createPerson, deletePerson, updatePerson };

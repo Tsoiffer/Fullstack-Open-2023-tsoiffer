@@ -18,14 +18,37 @@ const App = () => {
     });
   }, []);
 
+  const handlerUpdate = (changePerson) => {
+    if (
+      window.confirm(
+        `${changePerson.name} is already added to phonebook, replace the old namber with a new one`
+      )
+    ) {
+      const personUpdated = {
+        ...persons.find((person) => person.name === changePerson.name),
+        number: changePerson.number,
+      };
+      personsService
+        .updatePerson(personUpdated.id, personUpdated)
+        .then((response) => {
+          setPersons(
+            persons.map((person) =>
+              person.id !== response.id ? person : response
+            )
+          );
+        });
+    }
+  };
   const addPerson = (event) => {
     const newPerson = { name: newName, number: newNumber };
     event.preventDefault();
-    personsService.createPerson(newPerson).then((response) => {
-      setPersons(persons.concat(response));
-      setNewName("");
-      setNewNumber("");
-    });
+    persons.some((person) => person.name === newPerson.name)
+      ? handlerUpdate(newPerson)
+      : personsService.createPerson(newPerson).then((response) => {
+          setPersons(persons.concat(response));
+          setNewName("");
+          setNewNumber("");
+        });
   };
   const deletePerson = (id) => {
     if (window.confirm("Do you really want delete the user?")) {
