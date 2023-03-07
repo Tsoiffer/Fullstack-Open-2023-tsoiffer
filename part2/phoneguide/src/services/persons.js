@@ -20,4 +20,13 @@ const getAll = () => {
   });
 };
 
-export default { getAll, createPerson };
+const deletePerson = (id) => {
+  const request = axios.delete(`${baseUrl}/${id}`);
+  return request.then((response) => {
+    console.log("promise fulfilled");
+    console.log(response);
+    return response.data;
+  });
+};
+
+export default { getAll, createPerson, deletePerson };

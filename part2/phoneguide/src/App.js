@@ -27,6 +27,15 @@ const App = () => {
       setNewNumber("");
     });
   };
+  const deletePerson = (id) => {
+    if (window.confirm("Do you really want delete the user?")) {
+      personsService.deletePerson(id).then((response) => {
+        console.log("vamos a Refrezcar la lista");
+        setPersons(persons.filter((person) => person.id !== id));
+      });
+    }
+  };
+
   const handleNameChange = (event) => {
     setNewName(event.target.value);
   };
@@ -53,7 +62,11 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h3>Numbers</h3>
-      <Persons persons={persons} toFilter={toFilter} />
+      <Persons
+        persons={persons}
+        toFilter={toFilter}
+        deletePerson={deletePerson}
+      />
     </div>
   );
 };
