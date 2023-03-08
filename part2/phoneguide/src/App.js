@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import Notification from "./components/Notification";
 import personsService from "./services/persons";
 
 const App = () => {
@@ -9,6 +10,10 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [toFilter, setfilter] = useState("");
+  const [notification, setNotification] = useState({
+    message: null,
+    type: null,
+  });
 
   useEffect(() => {
     console.log("effect");
@@ -18,6 +23,18 @@ const App = () => {
     });
   }, []);
 
+  const successOperation = ({ name, messageHeader }) => {
+    setNotification({
+      message: messageHeader + " " + name,
+      type: "success",
+    });
+    setTimeout(() => {
+      setNotification({
+        message: null,
+        type: null,
+      });
+    }, 3000);
+  };
   const handlerUpdate = (changePerson) => {
     if (
       window.confirm(
@@ -36,6 +53,10 @@ const App = () => {
               person.id !== response.id ? person : response
             )
           );
+          successOperation({
+            name: personUpdated.name,
+            messageHeader: "changed number of",
+          });
         });
     }
   };
@@ -48,6 +69,7 @@ const App = () => {
           setPersons(persons.concat(response));
           setNewName("");
           setNewNumber("");
+          successOperation({ name: newPerson.name, messageHeader: "Added" });
         });
   };
   const deletePerson = (id) => {
@@ -72,6 +94,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification.message} type={notification.type} />
       <Filter
         toFilter={toFilter}
         handleFilterChange={handleFilterChange}
