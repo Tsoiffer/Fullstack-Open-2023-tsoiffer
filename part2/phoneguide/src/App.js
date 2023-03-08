@@ -23,11 +23,12 @@ const App = () => {
     });
   }, []);
 
-  const successOperation = ({ name, messageHeader }) => {
+  const messageOperation = ({ message, type }) => {
     setNotification({
-      message: messageHeader + " " + name,
-      type: "success",
+      message: message,
+      type: type,
     });
+
     setTimeout(() => {
       setNotification({
         message: null,
@@ -53,9 +54,15 @@ const App = () => {
               person.id !== response.id ? person : response
             )
           );
-          successOperation({
-            name: personUpdated.name,
-            messageHeader: "changed number of",
+          messageOperation({
+            type: "success",
+            message: `changed number of ${personUpdated.name}`,
+          });
+        })
+        .catch((error) => {
+          messageOperation({
+            type: "error",
+            message: `Information of ${personUpdated.name} has already been removed from server`,
           });
         });
     }
@@ -69,15 +76,28 @@ const App = () => {
           setPersons(persons.concat(response));
           setNewName("");
           setNewNumber("");
-          successOperation({ name: newPerson.name, messageHeader: "Added" });
+          messageOperation({
+            type: "success",
+            message: `Added ${newPerson.name}`,
+          });
         });
   };
   const deletePerson = (id) => {
     if (window.confirm("Do you really want delete the user?")) {
-      personsService.deletePerson(id).then((response) => {
-        console.log("vamos a Refrezcar la lista");
-        setPersons(persons.filter((person) => person.id !== id));
-      });
+      personsService
+        .deletePerson(id)
+        .then((response) => {
+          console.log("vamos a Refrezcar la lista");
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch((error) => {
+          messageOperation({
+            type: "error",
+            message: `Information of ${
+              persons.find((person) => person.id === id).name
+            } has already been removed from server`,
+          });
+        });
     }
   };
 
